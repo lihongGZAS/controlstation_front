@@ -1,0 +1,316 @@
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+// bower:scss
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+// endbower
+
+
+body{ 
+  margin:0; 
+  padding:0;
+  font-size:14px;
+  font-family: 'Microsoft YaHei';
+  min-width: 1024px;
+  overflow: hidden;
+}
+.proHeader{
+  & .logo{
+    width: 200px;
+    float: left;
+    background-color: #165abb;
+    height: 70px;
+    line-height: 70px;
+    color: #fff;
+    & img{
+      margin: 0 10px 0 16px;
+    }
+    & span{
+      font-size: 18px;
+    }
+  }
+  & .title{
+    margin-right: 100px;
+    margin-left: 200px;
+    padding-left:14px;
+    height: 70px;
+    line-height: 70px;
+    font-size: 24px;
+    font-weight: normal;
+  }
+  & .userSet{
+    width: 80px;
+    float: right;
+    height: 70px;
+    line-height: 70px;
+    text-align:center;
+  }
+}
+
+.proMenu{
+  width: 200px;
+  background-color:#051F32;
+  height: 698px;
+  float: left;
+  color:#8697ae;
+  & ul{
+    margin:0;
+    padding:0;
+    list-style: none;
+    cursor: pointer;
+  }
+  & li:hover{
+    color: #fff;
+    background-color:#254156;
+  }
+  & .mainMenuActive{
+    color: #fff;
+    background-color:#2d485d;
+  }
+  & .childMenuActive{
+    color: #fff;
+    background-color:#254156;
+  }
+  & >ul>li{
+    display: block;
+    width: 100%;
+    background-color:#0B2A40;
+    height: 58px;
+    line-height: 58px;
+    padding-left: 15px;
+    font-size: 16px;
+    border-bottom:1px solid #051f32;
+    & i{
+      float: right;
+      height: 58px;
+      line-height: 58px;
+      right: 10px;
+    }
+  }
+  & >ul ul li a:hover{
+    color: #fff;
+    background-color:#254156;
+  }
+  & >ul ul li a{
+    display: block;
+    color:#8697ae;
+    text-decoration: none;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 30px;
+    border-bottom: 1px solid #0B2A40;
+  }
+}
+.proBody{
+  width:auto;
+  margin-left:200px;
+  height: 698px;
+  background-color:#E9E9E9;
+}
+.formQuery{
+  &> div{
+    margin-top:20px;
+    & div{
+      padding:0;
+      height: 34px;
+      line-height: 34px;
+      & label{
+        text-align: right;
+        display: block;
+        width: 100%;
+        padding-right:20px;
+      }
+    }
+  } 
+}
+.tableHead{
+  height: 0px;
+  position: relative;
+  top: 20px;
+  & div{
+    background: #fff;
+    & table{
+      margin-bottom:0px;
+      & th{
+        color : #3471b0;
+        text-align: center;
+      }
+      & input{
+        margin:0;
+      }
+    }
+  }
+}
+.formTable{
+  margin-top:20px;
+  background: #fff;
+  max-height: 563px;
+  overflow: auto;
+  & table{
+    margin-bottom:0px;
+    & .trClass{
+      background: #f9f9f9;
+    }
+    & th{
+    color : #3471b0;
+    text-align: center;
+    }
+    & td{
+      height: 34px;
+      text-align: center;
+    }
+    & input{
+      margin:0;
+    }
+  }
+}
+.globalTip{
+  float: left;
+  position: relative;
+  left: 50%;
+  top: -755px; 
+  height: 0;
+  & div{
+    position: relative;
+    padding:10px;
+    left: -50%; 
+  }
+}
+
+.multiSelect_pro{ 
+  position: relative;
+  & em{
+    position: absolute;
+    top: 15px;
+    right: 8px;
+    border-top: 6px dashed;
+    border-right: 3px solid transparent;
+    border-left: 3px solid transparent;
+  }
+  & ul>li:first-child{
+    width: 100%;
+  }
+  & ul>li:nth-child(2){
+    width: 100%;
+    display: block;
+    border-bottom: 1px dashed #cccccc;
+    margin: 0;
+    padding: 0;
+    height: 1px;
+  }
+  & ul{
+    border: 1px solid #cccccc;
+    font-size: 12px;
+    list-style: none;
+    padding: 0;
+    background: #fff;
+    z-index: 10;
+    position: absolute;
+    width: 100%;
+    border-radius: 4px;
+    max-height: 230px;
+    overflow: auto;
+    & li{
+      list-style:none;
+      cursor: pointer;
+      width: 25%;
+      float: left;
+      height: 25px;
+      line-height: 25px;
+      padding-left: 7px;
+      & input{
+        vertical-align: middle;
+        margin-top: 0;
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+}
+.multiSelect{ 
+  position: relative;
+  & em{
+    position: absolute;
+    top: 15px;
+    right: 8px;
+    border-top: 6px dashed;
+    border-right: 3px solid transparent;
+    border-left: 3px solid transparent;
+  }
+  & ul{
+    border: 1px solid #cccccc;
+    list-style: none;
+    padding: 0;
+    background: #fff;
+    z-index: 10;
+    position: absolute;
+    width: 100%;
+    border-radius: 4px;
+    max-height: 230px;
+    overflow: auto;
+    & li{
+      cursor: pointer;
+      height: 25px;
+      line-height: 25px;
+      padding-left: 7px;
+      &:nth-child(2){
+        width: 100%;
+        display: block;
+        border-bottom: 1px dashed #cccccc;
+        margin: 0;
+        padding: 0;
+        height: 1px;
+      }
+      &:nth-child(2n){
+        background-color:#f5f5f5;
+      }
+      & input{
+        vertical-align: middle;
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+.tableHeadFixed{
+  margin-top:20px;
+  background: #fff;
+  max-height: 450px;
+  overflow: auto;
+  position: relative;
+  .fixedHead{
+    position: absolute;
+    background-color: #fff;
+    & table{
+      width: 1400px;
+      & th{
+        height: 34px;
+        line-height: 34px;
+        color : #3471b0;
+        text-align: center;
+        border:1px solid #ddd
+      }
+    }
+  }
+  .scollTable{
+    & table{
+      width: 1400px;
+      & th{
+        height: 34px;
+        line-height: 34px;
+        color : #3471b0;
+        text-align: center;
+        border:1px solid #ddd
+      }
+      & td{
+        height: 34px;
+        line-height: 34px;
+        text-align: center;
+        border:1px solid #ddd;
+      }
+    }
+  }
+}
+.grey{
+  color:grey;
+}
+

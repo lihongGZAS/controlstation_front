@@ -1,0 +1,130 @@
+<!-- 结算稽核重跑 -->
+<div class="row" ng-init="initPage()">
+	<form class="formQuery col-lg-12 col-md-12" role="form">
+		<div class="col-lg-4 col-md-6">
+			<div class="col-lg-4 col-md-4"><label>账期类型</label></div>
+			<div class="col-lg-8 col-md-8">
+				<select ng-model="queryParams.dateType" ng-change="changeDateType()" class="form-control">
+					<option value="DAY">账期日</option>
+					<option value="MONTH">账期月</option>
+				</select>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-6">
+			<div class="col-lg-4 col-md-4"><label>账期</label></div>
+			<div class="col-lg-8 col-md-8">
+				<input name="settleDate" type="text" ng-model="queryParams.settleDate" class="form-control" placeholder="请选择日期">
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-6">
+			<div class="col-lg-4 col-md-4"><label>省份</label></div>
+			<div class="col-lg-8 col-md-8">
+				<multi-select list-datas="provinces" name="provinceName" code="provinceCode" ng-model="queryParams.provinceCode" ng-class="multiSelect_pro">
+				</multi-select>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-6">
+			<div class="col-lg-4 col-md-4"><label>外部商户</label></div>
+			<div class="col-lg-8 col-md-8">
+				<select name="businessLine" class="form-control" id="selectValue" ng-model="queryParams.businessLine" ng-change="changeLine()">
+					<option value="">全部</option>
+					<option value="0068">咪咕</option>
+					<option value="0071">互联网</option>
+				</select> 
+			</div>
+		</div> 
+		<div class="col-lg-6 col-md-6">
+			<div class="col-lg-2 col-md-2"></div>
+			<div class="col-lg-10 col-md-10">
+				<button type="button" class="btn btn-primary" ng-click="queryByCondition()"><i class="glyphicon glyphicon-search"></i>
+					查询
+				</button>
+				<button type="button" id="querySign" class="btn btn-primary" ng-disabled="stateControl.dateType=='MONTH'" ng-click="dayByCondition()"><i class="glyphicon glyphicon-repeat"></i>日报重跑</button>
+				<button type="button" id="querySign" class="btn btn-primary glyphicon" ng-disabled="stateControl.dateType=='DAY'" ng-click="dayByCondition()"><i class="glyphicon glyphicon-repeat"></i>月报重跑</button>
+			</div>
+		</div>
+	</form>
+	<div class="col-lg-12 col-md-12"> 
+		<div class="tableHeadFixed" id="monthTable">
+			<div class="scollTable">
+				<table>
+					<thead>
+						<tr ng-if="stateControl.dateType=='DAY'"><th colspan="11">{{stateControl.title}}</th></tr>
+						<tr ng-if="stateControl.dateType=='MONTH'"><th colspan="13">{{stateControl.title}}</th></tr>
+						<tr>
+							<th>{{stateControl.dateName}}</th>
+							<th>{{stateControl.settleDate}}</th>
+							<th>单位:人民币(元)</th>
+							<th ng-if="stateControl.dateType=='MONTH'" colspan="10"></th>
+							<th ng-if="stateControl.dateType=='DAY'" colspan="8"></th>
+						</tr>
+						<tr>
+							<th>序号</th>
+							<th>省公司</th>
+							<th>往来段</th>
+							<th>业务平台企业代码</th>
+							<th>扣费交易总笔数</th>
+							<th>扣费交易总金额</th>
+							<th>退款交易总笔数</th>
+							<th>退款交易总金额</th>
+							<th ng-if="stateControl.dateType=='MONTH'">核减交易总笔数</th>
+							<th ng-if="stateControl.dateType=='MONTH'">核减交易总金额</th>
+							<th>结算金额</th>
+							<th>结算金额*85%</th>
+							<th>结算金额*15%</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="month in arrDatas" check-table-head="monthTable" >
+							<td>{{$index+1}}</td>
+							<td>{{month.provinceName}}</td>
+							<td>{{month.currentPeriod}}</td>
+							<td>{{month.spCode}}</td>
+							<td>{{month.chargeNumber}}</td>
+							<td>{{month.chargeAmount}}</td>
+							<td>{{month.refundNumber}}</td>
+							<td>{{month.refundAmount}}</td>
+							<td ng-if="stateControl.dateType=='MONTH'">{{month.subtractionNumber}}</td>
+							<td ng-if="stateControl.dateType=='MONTH'">{{month.subtractionAmount}}</td>
+							<td>{{month.settlementAmount}}</td>
+							<td>{{month.settlementAmount85}}</td>
+							<td>{{month.settlementAmount15}}</td>
+						</tr>
+						<tr>
+							<td colspan="4" >合计：</td>
+							<td>{{arrTotlaDatas.chargeNumberTotal}}</td>
+							<td>{{arrTotlaDatas.chargeAmountTotal}}</td>
+							<td>{{arrTotlaDatas.refundNumberTotal}}</td>
+							<td>{{arrTotlaDatas.refundAmountTotal}}</td>
+							<td ng-if="stateControl.dateType=='MONTH'">{{arrTotlaDatas.subtractionNumberTotal}}</td>
+							<td ng-if="stateControl.dateType=='MONTH'">{{arrTotlaDatas.subtractionAmountTotal}}</td>
+							<td>{{arrTotlaDatas.settlementAmountTotal}}</td>
+							<td>{{arrTotlaDatas.settlementAmount85Total}}</td>
+							<td>{{arrTotlaDatas.settlementAmount15Total}}</td>	
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- 核减文件下载详情 -->
+	<div class="modal fade" id="fileRun" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  aria-hidden="true" data-backdrop="static" data-keyboard="false">  
+	  <div class="modal-dialog" role="document">  
+    <div class="modal-content">  
+      <div class="modal-header">  
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">  
+            <span aria-hidden="true">×</span>  
+        </button>  
+        <h4 class="modal-title" id="myModalLabel">稽核结算重跑</h4>  
+      </div>  
+      <div class="modal-body">  
+         <h3 ng-if="runDayState">确定{{dayModel}}重跑</h3>
+         <h3 ng-if="runMonthState">确定{{monthModel}}重跑</h3> 
+      </div>  
+      <div class="modal-footer">  
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>  
+        <button type="button" class="btn btn-primary" ng-click="submitRunFile()">确认</button>
+      </div>  
+    </div>  
+  </div>  
+</div>

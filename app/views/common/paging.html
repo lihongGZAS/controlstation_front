@@ -1,0 +1,35 @@
+<nav class="nav_paging">
+  <ul>
+    <li title="首页">
+      <button type="button" ng-click="setCurrentPage(1)">{{firstText}}</button>
+    </li>
+    <li title="上一页">
+      <button type="button" ng-click="setCurrentPage(currentPage-1)">{{prevText}}</button>
+    </li>
+    <li ng-repeat="pageno in pageList track by $index">
+      <button type="button" ng-class="{active:pageno == currentPage}" ng-click="setCurrentPage(pageno)">{{pageno}}</button>
+    </li>
+    <li title="下一页">
+      <button type="button" ng-click="setCurrentPage(currentPage-0+1)">{{nextText}}</button>
+    </li>
+    <li title="尾页">
+      <button type="button" ng-click="setCurrentPage(totalPage)">{{lastText}}</button>
+    </li>
+    <li>
+      <span>第{{currentPage == null ? 1 : currentPage}}/{{totalPage == 0 ? 1 : totalPage}}页</span>
+    </li>
+    <li>
+      <span>共{{totalCount  == null ? 0 : totalCount}}条</span>
+    </li>
+    <li>
+      每页
+      <select ng-change="changePageSize()" ng-model="pageSize" ng-options="p for p in pageSizeList">
+      </select>
+      条
+    </li>
+    <li>跳转至 <input type="text" ng-init="pageno = currentPage" ng-model="pageno"/></li>
+    <li>
+      <button type="button" ng-disabled="false" ng-click='setCurrentPage(pageno)'>GO</button>
+    </li>
+  </ul>
+</nav>

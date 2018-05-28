@@ -1,0 +1,127 @@
+<!-- 文件下发 -->
+<div class="row" ng-init="initPage()">
+	<form class="formQuery col-lg-12 col-md-12" role="form">
+		<div class="col-lg-4 col-md-6">
+	    	<div class="col-lg-4 col-md-4"><label>账期类型:</label></div>
+	    	<div class="col-lg-8 col-md-8">
+	    		<select name="dataType" class="form-control" ng-model="queryParams.dateType" ng-change="dateTypeChange()">
+		        	<option value="day">账期日</option>
+		        	<option value="month">账期月</option>
+      			</select>
+	    	</div>	
+	    </div>
+		<div class="col-lg-4 col-md-6">
+	  		<div class="col-lg-4 col-md-4"><label>账期:</label></div>
+	    	<div class="col-lg-8 col-md-8">
+	    		<input name="signDate" type="text" ng-model="queryParams.settleDate" class="form-control" placeholder="请选择日期">
+	   		</div>
+	    </div>
+	    <div class="col-lg-4 col-md-6">
+		  	<div class="col-lg-4 col-md-4"><label>外部商户:</label></div>
+			<div class="col-lg-8 col-md-8">
+			    <select name="businessLine" class="form-control" ng-model="queryParams.businessLine">
+			    	<option value="">全部</option>
+			    	<option value="0068">咪咕</option>
+			    	<option value="0071">互联网</option>
+			    </select>
+		    </div>
+	    </div>
+	    <div class="col-lg-4 col-md-6">
+	  		<div class="col-lg-4 col-md-4"><label>省份:</label></div>
+	  		<div class="col-lg-8 col-md-8">
+        		<multi-select list-datas="provinces" name="provinceName" code="provinceCode" ng-model="queryParams.provinceCode" ng-class="multiSelect_pro"></multi-select>
+      	    </div>
+	    </div>
+		<div class="col-lg-4 col-md-6"> 
+	    	<div class="col-lg-4 col-md-4"><label>文件类型:</label></div>
+	   	 	<div class="col-lg-8 col-md-8">
+		    	<select name="alarmStatus" class="form-control" ng-model="queryParams.fileType">
+		        	<option value="301">差异文件</option>
+		        	<option value="302">核减明细</option>
+      			</select>
+      		</div>	
+	    </div>
+	    <div class="col-lg-4 col-md-6">
+		  	<div class="col-lg-4 col-md-4"><label>状态类型:</label></div>
+		  	<div class="col-lg-8 col-md-8">
+			    <select name="contractStatus" class="form-control" ng-model="queryParams.fileStatus">
+			        <option value="1">核心下发到审核目录成功</option>
+			        <option value="5">审核成功</option>
+			        <option value="3">下发成功</option>
+			        <option value="4">下发异常</option>
+		      	</select>
+	        </div>
+	    </div>
+	    <div class="col-lg-4 col-md-6">
+	    	<div class="col-lg-4 col-md-4"><label>文件名:</label></div>
+	    	<div class="col-lg-8 col-md-8">
+			    <input type="text" ng-model="queryParams.fileName" class="form-control" placeholder="文件名称" maxlength='48'>
+      	</div>
+	    </div>
+	  
+	  <div class="col-lg-4 col-md-6">
+	  	<div class="col-lg-offset-4 col-md-offset-4 col-lg-8 col-md-8"> 
+	  		<button type="button" class="btn btn-primary" ng-click="queryByCondition1()"><i class="glyphicon glyphicon-search"></i>
+	  		查询
+	  		</button>
+	  		<button type="button" id="auditBtn" class="btn btn-primary" ng-click="auditAction()" ng-disabled="audit"><i class="glyphicon glyphicon-check"></i>审核</button>
+	  		<button type="button" id="sendBtn" class="btn btn-primary"  ng-click="sendAction()" ng-disabled="sendDown"><i class="glyphicon glyphicon-transfer"></i>下发</button>
+	  	</div>
+	  </div>
+	</form>
+	<div class="col-lg-12 col-md-12"> 
+		<div class="formTable" id="formTable">
+			<table class="table table-striped table-hover table-bordered">
+				<thead>
+					<tr>
+						<th><input type="checkbox" ng-checked="resultDas.marquee" ng-click="proCheckbox('list',resultDas)"></th>
+						<th>序号</th>
+						<th>账期</th>
+						<th>文件类型</th>
+						<th>外部商户</th>
+						<th>省份</th>
+						<th>文件名称</th>
+						<th>状态类型</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="res in resultDas" check-table="checkTable('formTable')">
+						<td><input type="checkbox" name="" ng-checked="res.checkbox" ng-click="proCheckbox('list',resultDas,$index)"/></td>
+						<td>{{$index+1}}</td>
+						<td>{{res.settleDate}}</td>
+						<td>{{res.fileType}}</td>
+						<td>{{res.businessLine}}</td>
+						<td>{{res.provinceCode}}</td>
+						<td ng-class="{'grey':grey}">{{res.fileName}}</td>
+						<td>{{res.fileStatus}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="col-lg-12 col-md-12">
+		<paging total-count="page.totalCount" page-size="page.pageSize" current-page="page.currentPage"	
+						first-text="首页" prev-text="上一页" next-text="下一页" last-text="尾页" 
+						go-page="getNewPageData(pageSize,currentPage)">
+		</paging>
+	</div>
+</div>
+
+<!-- 异常文件信息详情 -->
+<div class="modal fade" tabindex="-1" role="dialog" id="abnormalModal"  aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">失败详情</h4>
+      </div>
+      <div class="modal-body" ng-repeat="errorFile in files">
+      <p><span>文件名：</span>{{errorFile}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+

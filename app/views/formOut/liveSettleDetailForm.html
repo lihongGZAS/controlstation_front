@@ -1,0 +1,117 @@
+<!-- 在线计费详单报表 -->
+<div class="row" ng-init="initPage()">
+  <form class="formQuery col-lg-12 col-md-12" role="form">
+    <div class="col-lg-4 col-md-6">
+      <div class="col-lg-4 col-md-4">
+        <label>报表类型</label>
+      </div>
+      <div class="col-lg-8 col-md-8">
+        <select class="form-control" ng-model="queryParams.formType" ng-change="changeFormType()">
+          <option value="日详单">日详单</option>
+          <option value="月详单">月详单</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="col-lg-4 col-md-4">
+        <label>账期</label>
+      </div>
+      <div class="col-lg-8 col-md-8">
+        <input type="text" name="accountDate" ng-model="queryParams.accountDate" class="form-control" placeholder="请选择日期"></div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="col-lg-4 col-md-4">
+        <label>外部商户</label>
+      </div>
+      <div class="col-lg-8 col-md-8">
+        <select class="form-control" ng-model="queryParams.outerBusinessman">
+          <option value="">全部</option>
+          <option value="0068">咪咕</option>
+          <option value="0071">互联网</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="col-lg-4 col-md-4">
+        <label>省份</label>
+      </div>
+      <div class="col-lg-8 col-md-8">
+        <multi-select list-datas="provinces" name="provinceName" code="provinceCode" ng-model="queryParams.provinceCode" ng-class="multiSelect_pro">
+        </multi-select>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="col-lg-8 col-md-8 col-md-offset-4 col-lg-offset-4">
+        <button type="button" class="btn btn-primary" ng-click="queryByCondition()"> <i class="glyphicon glyphicon-search"></i>
+          查询
+        </button>
+        <button type="button" class="btn btn-primary" ng-click="export()"> <i class="glyphicon glyphicon-repeat"></i>
+            导出
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="col-lg-12 col-md-12">
+    <div class="tableHeadFixed" id="monthTable">
+      <div class="scollTable">
+        <table>
+          <thead>
+            <tr ng-if="stateControl.dateType==='day'"><th colspan="11">{{stateControl.title}}</th></tr>
+            <tr ng-if="stateControl.dateType==='month'"><th colspan="13">{{stateControl.title}}</th></tr>
+            <tr>
+              <th>结算账期：</th>
+              <th>{{stateControl.accountDate}}</th>
+              <th>单位:人民币(元)</th>
+              <th ng-if="stateControl.dateType=='day'" colspan="8"></th>
+              <th ng-if="stateControl.dateType=='month'" colspan="10"></th>
+            </tr>
+            <tr>
+              <th>序号</th>
+              <th>省公司</th>
+              <th>往来段</th>
+              <th>业务平台企业代码</th>
+              <th>扣费交易总笔数</th>
+              <th>扣费交易总金额</th>
+              <th>退款交易总笔数</th>
+              <th>退款交易总金额</th>
+              <th ng-if="stateControl.dateType=='month'">核减交易总笔数</th>
+              <th ng-if="stateControl.dateType=='month'">核减交易总金额</th>
+              <th>结算金额</th>
+              <th>结算金额*85%</th>
+              <th>结算金额*15%</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="res in monthData" check-table-head="monthTable">
+              <td>{{$index+1}}</td>
+              <td>{{res.provinceName}}</td>
+              <td>{{res.currentPeriod}}</td>
+              <td>{{res.spCode}}</td>
+              <td>{{res.chargeNumber}}</td>
+              <td>{{res.changeAmount}}</td>
+              <td>{{res.refundNumber}}</td>
+              <td>{{res.refundAmount}}</td>
+              <td ng-if="stateControl.dateType=='month'">{{res.subtractionNumber}}</td>
+              <td ng-if="stateControl.dateType=='month'">{{res.subtractionAmount}}</td>
+              <td>{{res.settlementAmount}}</td>
+              <td>{{res.settlementAmount85}}</td>
+              <td>{{res.settlementAmount15}}</td>
+            </tr>
+            <tr>
+              <td colspan="4">合计：</td>
+              <td>{{monthDetail.chargeNumberTotal}}</td>
+              <td>{{monthDetail.changeAmountTotal}}</td>
+              <td>{{monthDetail.refundNumberTotal}}</td>
+              <td>{{monthDetail.refundAmountTotal}}</td>
+              <td ng-if="stateControl.dateType=='month'">{{monthDetail.subtractionNumberTotal}}</td>
+              <td ng-if="stateControl.dateType=='month'">{{monthDetail.subtractionAmountTotal}}</td>
+              <td>{{monthDetail.settlementAmountTotal}}</td>
+              <td>{{monthDetail.settlementAmount85Total}}</td>
+              <td>{{monthDetail.settlementAmount15Total}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

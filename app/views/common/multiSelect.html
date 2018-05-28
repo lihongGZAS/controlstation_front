@@ -1,0 +1,15 @@
+<div ng-class="ngClass">
+  <div ng-click="dropDownPro($event)">
+    <input type="text" class="form-control" style="background:#fff;" ng-model="listNames" readonly="true"/> 
+    <em></em>
+  </div>
+  <ul ng-show="proList" ng-click="showDown($event)">
+    <li ng-click="proCheckbox('list',listDatas)">
+      <input type="checkbox" ng-checked="listDatas.marquee"/><span>全选</span>
+    </li>
+    <li></li>
+    <li ng-repeat="list in listDatas" ng-click="proCheckbox('list',listDatas,$index)">
+      <input type="checkbox" ng-checked="list.checkbox"/><span ng-bind="list.{{name}}"></span>
+    </li>
+  </ul>
+</div>

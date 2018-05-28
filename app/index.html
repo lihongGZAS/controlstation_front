@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>在线计费管控台</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/paging.css">
+    <!-- endbuild -->
+  </head>
+  <body ng-app="controlstationFrontApp">
+    <div ui-view></div>
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/lodash/lodash.js"></script>
+    <script src="bower_components/restangular/dist/restangular.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/config/config.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/router/router.js"></script>
+    <script src="scripts/filters/filters.js"></script>
+    <script src="scripts/directives/paging.js"></script>
+    <script src="scripts/directives/checkTable.js"></script>
+    <script src="scripts/services/commonService/commonService.js"></script>
+    <script src="scripts/directives/multiSelect.js"></script>
+    <script src="scripts/services/commonService/commonQueryService.js"></script>
+    <script src="scripts/services/commonService/dateTimePickerService.js"></script>
+    <script src="scripts/services/businessShow/signInOutService.js"></script>
+    <script src="scripts/services/informationQuery/failTransactionService.js"></script>
+    <script src="scripts/services/countShow/countDiffService.js"></script>
+    <script src="scripts/services/countShow/countAlarmService.js"></script>
+    <script src="scripts/services/countShow/countArriveSerice.js"></script>
+    <script src="scripts/services/formOut/liveSettleDetailFormService.js"></script>
+    <script src="scripts/services/formOut/liveBalanceSettleFormService.js"></script>
+    <script src="scripts/services/businessControl/settleCheckRerunService.js"></script>
+    <script src="scripts/services/businessControl/checkFileDownloadService.js"></script>
+    <script src="scripts/services/businessControl/fileSendService.js"></script>
+    <script src="scripts/services/businessControl/reconDownService.js"></script>
+    <script src="scripts/services/businessControl/reconRerunService.js"></script>
+    <script src="scripts/services/logOff/logOffServe.js"></script>
+
+    <script src="scripts/controllers/mainCtrl.js"></script>
+    <script src="scripts/controllers/businessShow/signInOutCtrl.js"></script>
+    <script src="scripts/controllers/informationQuery/failTransactionCtrl.js"></script>
+    <script src="scripts/controllers/countShow/countDiffCtrl.js"></script>
+    <script src="scripts/controllers/countShow/countAlarmCtrl.js"></script>
+    <script src="scripts/controllers/countShow/countArriveCtrl.js"></script>
+    <script src="scripts/controllers/formOut/liveSettleDetailFormCtrl.js"></script>
+    <script src="scripts/controllers/formOut/liveBalanceSettleFormCtrl.js"></script>
+    <script src="scripts/controllers/businessControl/settleCheckRerunCtrl.js"></script>
+    <script src="scripts/controllers/businessControl/checkFileDownloadCtrl.js"></script>
+    <script src="scripts/controllers/businessControl/fileSendCtrl.js"></script>
+    <script src="scripts/controllers/businessControl/reconDownCtrl.js"></script>
+    <script src="scripts/controllers/businessControl/reconRerunCtrl.js"></script>
+    <!-- endbuild -->
+</body>
+</html>

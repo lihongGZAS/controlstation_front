@@ -1,0 +1,319 @@
+<!-- 在线计费结算报表 -->
+<div class="row" ng-init="initPage()">
+  <form class="formQuery col-lg-12 col-md-12" role="form">
+    <div class="col-lg-4 col-md-6">
+      <div class="col-lg-4 col-md-4">
+        <label>账期</label>
+      </div>
+      <div class="col-lg-8 col-md-8">
+       <input type="text" name="settleDate" ng-model="queryParams.settleDate" class="form-control" placeholder="请选择日期"></div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="col-lg-4 col-md-4">
+        <label>外部商户</label>
+      </div>
+      <div class="col-lg-8 col-md-8">
+        <select  name="businessLine" class="form-control" ng-model="queryParams.businessLine">
+          <option value="0068">咪咕</option>
+          <option value="0071">互联网</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="col-lg-4 col-md-4">
+        <label>省公司</label>
+      </div>
+      <div class="col-lg-8 col-md-8">
+        <multi-select list-datas="provinces" name="provinceName" code="provinceCode" ng-model="queryParams.provinceCode" ng-class="multiSelect_pro">
+        </multi-select>
+      </div>
+    </div>
+    <div class="col-lg-8 col-md-12">
+      <div class="col-lg-8 col-md-8 col-md-offset-2 col-lg-offset-2">
+        <button type="button" class="btn btn-primary" ng-click="queryByCondition()"> <i class="glyphicon glyphicon-search"></i>
+          查询
+        </button>
+        <button type="button" class="btn btn-primary" ng-click="export()" ng-disabled="isOnlyProvince"><i class="glyphicon glyphicon-log-out"></i>
+          导出汇总表
+        </button>
+        <button ng-if="queryParams.businessLine==='0071'" type="button" class="btn btn-primary" ng-click="exports()"><i class="glyphicon glyphicon-log-out"></i>
+          导出明细表
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="col-lg-12 col-md-12">
+    <div class="tableHeadFixed" id="dayTable">
+      <div class="scollTable">
+        <table style="width:2400px">
+          <thead>
+            <tr><th colspan="28"><h3>{{showTable.title}}</h3></th></tr>
+            <tr>
+              <th colspan="2">结算单代码:</th>
+              <th>{{statementCode}}</th>
+              <th></th>
+              <th>结算月:</th>
+              <th>{{showTable.monthDate}}</th>
+              <th>税率:</th>
+              <th>6%</th>
+              <th colspan="18"></th>
+              <th colspan="2">单位:人民币(元)</th>
+            </tr>
+            <tr ng-if="showTable.businessLine==='0068'">
+              <th colspan="3"></th>
+              <th colspan="4">咪咕音乐</th>
+              <th colspan="4">咪咕数媒</th>
+              <th colspan="4">咪咕视讯</th>
+              <th colspan="4">咪咕互娱</th>
+              <th colspan="4">咪咕动漫</th>
+              <th colspan="4">咪咕业务</th>
+              <th rowspan="2">结算额</th>
+            </tr>
+            <tr ng-if="showTable.businessLine==='0071'">
+              <th colspan="3"></th>
+              <th colspan="4">互联网</th>
+              <th colspan="4">和彩云</th>
+              <th colspan="4">139邮箱</th>
+              <th colspan="4">和留言</th>
+              <th colspan="4">和飞信</th>
+              <th colspan="4">和通讯录</th>
+              <th rowspan="2">结算额</th>
+            </tr>
+            <tr>
+              <th colspan="3"></th>
+              <th colspan="2">应结出</th>
+              <th colspan="2">应结入</th>
+              <th colspan="2">应结出</th>
+              <th colspan="2">应结入</th>
+              <th colspan="2">应结出</th>
+              <th colspan="2">应结入</th>
+              <th colspan="2">应结出</th>
+              <th colspan="2">应结入</th>
+              <th colspan="2">应结出</th>
+              <th colspan="2">应结入</th>
+              <th colspan="2">应结出</th>
+              <th colspan="2">应结入</th>
+            </tr>
+            <tr>
+              <th>序号</th>
+              <th>省公司</th>
+              <th>往来段</th>
+              <th>不含税金额(B1)</th>
+              <th>税额(B2)</th>
+              <th>不含税金额(B3)</th>
+              <th>税额(B4)</th>
+              <th>不含税金额(C1)</th>
+              <th>税额(C2)</th>
+              <th>不含税金额(C3)</th>
+              <th>税额(C4)</th>
+              <th>不含税金额(D1)</th>
+              <th>税额(D2)</th>
+              <th>不含税金额(D3)</th>
+              <th>税额(D4)</th>
+              <th>不含税金额(E1)</th>
+              <th>税额(E2)</th>
+              <th>不含税金额(E3)</th>
+              <th>税额(E4)</th>
+              <th>不含税金额(F1)</th>
+              <th>税额(F2)</th>
+              <th>不含税金额(F3)</th>
+              <th>税额(F4)</th>
+              <th>不含税金额(G1)</th>
+              <th>税额(G2)</th>
+              <th>不含税金额(G3)</th>
+              <th>税额(G4)</th>
+              <th>含税金额</th>
+            </tr>
+          </thead>
+          <tbody ng-if="showTable.businessLine==='0068'">
+            <tr ng-repeat="res in provinceDatas" check-table-head="dayTable"  table-width="2400px">
+              <td>{{$index+1}}</td>
+              <td>{{res.provinceName}}</td>
+              <td>{{res.currentPeriod}}</td>
+              <td>{{res.out_miguMusic_noTax}}</td>
+              <td>{{res.out_miguMusic_Tax}}</td>
+              <td>{{res.in_miguMusic_noTax}}</td>
+              <td>{{res.in_miguMusic_Tax}}</td>
+              <td>{{res.out_miguMedia_noTax}}</td>
+              <td>{{res.out_miguMedia_Tax}}</td>
+              <td>{{res.in_miguMedia_noTax}}</td>
+              <td>{{res.in_miguMedia_Tax}}</td>
+              <td>{{res.out_miguVideo_noTax}}</td>
+              <td>{{res.out_miguVideo_Tax}}</td>
+              <td>{{res.in_miguVideo_noTax}}</td>
+              <td>{{res.in_miguVideo_Tax}}</td>
+              <td>{{res.out_miguEntertainment_noTax}}</td>
+              <td>{{res.out_miguEntertainment_Tax}}</td>
+              <td>{{res.in_miguEntertainment_noTax}}</td>
+              <td>{{res.in_miguEntertainment_Tax}}</td>
+              <td>{{res.out_miguCartoon_noTax}}</td>
+              <td>{{res.out_miguCartoon_Tax}}</td>
+              <td>{{res.in_miguCartoon_noTax}}</td>
+              <td>{{res.in_miguCartoon_Tax}}</td>
+              <td>{{res.out_miguBusiness_noTax}}</td>
+              <td>{{res.out_miguBusiness_Tax}}</td>
+              <td>{{res.in_miguBusiness_noTax}}</td>
+              <td>{{res.in_miguBusiness_Tax}}</td>
+              <td>{{res.settlementAmount}}</td>
+            </tr>
+            <tr ng-repeat="migu in miguDatas">
+              <td>{{$index + 1 + provinceDatas.length}}</td>
+              <td>{{migu.spName}}</td>
+              <td>{{migu.m_currentPeriod}}</td>
+              <td></td>
+              <td></td>
+              <td>{{migu.m_in_miguMusic_noTax}}</td>
+              <td>{{migu.m_in_miguMusic_Tax}}</td>
+              <td></td>
+              <td></td>
+              <td>{{migu.m_in_miguMedia_noTax}}</td>
+              <td>{{migu.m_in_miguMedia_Tax}}</td>
+              <td></td>
+              <td></td>
+              <td>{{migu.m_in_miguVideo_noTax}}</td>
+              <td>{{migu.m_in_miguVideo_Tax}}</td>
+              <td></td>
+              <td></td>
+              <td>{{migu.m_in_miguEntertainment_noTax}}</td>
+              <td>{{migu.m_in_miguEntertainment_Tax}}</td>
+              <td></td>
+              <td></td>
+              <td>{{migu.m_in_miguCartoon_noTax}}</td>
+              <td>{{migu.m_in_miguCartoon_Tax}}</td>
+              <td></td>
+              <td></td>
+              <td>{{migu.m_in_miguBusiness_noTax}}</td>
+              <td>{{migu.m_in_miguBusiness_Tax}}</td>
+              <td>{{migu.m_settlementAmount}}</td>
+            </tr>
+            <tr ng-repeat="total in totalDatas">
+              <td></td>
+              <td colspan="2">{{total.totalNumber}}</td>
+              <td>{{total.t_out_miguMusic_noTax}}</td>
+              <td>{{total.t_out_miguMusic_Tax}}</td>
+              <td>{{total.t_in_miguMusic_noTax}}</td>
+              <td>{{total.t_in_miguMusic_Tax}}</td>
+              <td>{{total.t_out_miguMedia_noTax}}</td>
+              <td>{{total.t_out_miguMedia_Tax}}</td>
+              <td>{{total.t_in_miguMedia_noTax}}</td>
+              <td>{{total.t_in_miguMedia_Tax}}</td>
+              <td>{{total.t_out_miguVideo_noTax}}</td>
+              <td>{{total.t_out_miguVideo_Tax}}</td>
+              <td>{{total.t_in_miguVideo_noTax}}</td>
+              <td>{{total.t_in_miguVideo_Tax}}</td>
+              <td>{{total.t_out_miguEntertainment_noTax}}</td>
+              <td>{{total.t_out_miguEntertainment_Tax}}</td>
+              <td>{{total.t_in_miguEntertainment_noTax}}</td>
+              <td>{{total.t_in_miguEntertainment_Tax}}</td>
+              <td>{{total.t_out_miguCartoon_noTax}}</td>
+              <td>{{total.t_out_miguCartoon_Tax}}</td>
+              <td>{{total.t_in_miguCartoon_noTax}}</td>
+              <td>{{total.t_in_miguCartoon_Tax}}</td>
+              <td>{{total.t_out_miguBusiness_noTax}}</td>
+              <td>{{total.t_out_miguBusiness_Tax}}</td>
+              <td>{{total.t_in_miguBusiness_noTax}}</td>
+              <td>{{total.t_in_miguBusiness_Tax}}</td>
+              <td>{{total.t_settlementAmount}}</td>
+            </tr>
+          </tbody>
+          <tbody ng-if="showTable.businessLine==='0071'">
+            <tr ng-repeat="res in provinceDatas" check-table-head="dayTable"  table-width="2400px">
+              <td>{{$index+1}}</td>
+              <td>{{res.provinceName}}</td>
+              <td>{{res.currentPeriod}}</td>
+              <td>{{res.out_hlw_noTax}}</td>
+              <td>{{res.out_hlw_Tax}}</td>
+              <td>{{res.in_hlw_noTax}}</td>
+              <td>{{res.in_hlw_Tax}}</td>
+
+              <td>{{res.out_heCloud_noTax}}</td>
+              <td>{{res.out_heCloud_Tax}}</td>
+              <td>{{res.in_heCloud_noTax}}</td>
+              <td>{{res.in_heCloud_Tax}}</td>
+
+              <td>{{res.out_139Email_noTax}}</td>
+              <td>{{res.out_139Email_Tax}}</td>
+              <td>{{res.in_139Email_noTax}}</td>
+              <td>{{res.in_139Email_Tax}}</td>
+
+              <td>{{res.out_heMessage_noTax}}</td>
+              <td>{{res.out_heMessage_Tax}}</td>
+              <td>{{res.in_heMessage_noTax}}</td>
+              <td>{{res.in_heMessage_Tax}}</td>
+
+              <td>{{res.out_heFetion_noTax}}</td>
+              <td>{{res.out_heFetion_Tax}}</td>
+              <td>{{res.in_heFetion_noTax}}</td>
+              <td>{{res.in_heFetion_Tax}}</td>
+
+              <td>{{res.out_heContacts_noTax}}</td>
+              <td>{{res.out_heContacts_Tax}}</td>
+              <td>{{res.in_heContacts_noTax}}</td>
+              <td>{{res.in_heContacts_Tax}}</td>
+              <td>{{res.settlementAmount}}</td>
+            </tr>
+            <tr ng-repeat="migu in miguDatas">
+              <td>{{$index + 1 + provinceDatas.length}}</td>
+              <td>{{migu.spName}}</td>
+              <td>{{migu.m_currentPeriod}}</td>
+              <td></td>
+              <td></td>
+              <td>{{migu.h_in_hlw_noTax}}</td>
+              <td>{{migu.h_in_hlw_Tax}}</td>
+              <td></td>
+              <td></td>
+              <td>{{migu.h_in_heCloud_noTax}}</td>
+              <td>{{migu.h_in_heCloud_Tax}}</td>
+              <td></td>
+              <td></td>
+              <td>{{migu.h_in_139Email_noTax}}</td>
+              <td>{{migu.h_in_139Email_Tax}}</td>
+              <td></td>
+              <td></td>
+              <td>{{migu.h_in_heMessage_noTax}}</td>
+              <td>{{migu.h_in_heMessage_Tax}}</td>
+              <td></td>
+              <td></td>
+              <td>{{migu.h_in_heFetion_noTax}}</td>
+              <td>{{migu.h_in_heFetion_Tax}}</td>
+              <td></td>
+              <td></td>
+              <td>{{migu.h_in_heContacts_noTax}}</td>
+              <td>{{migu.h_in_heContacts_Tax}}</td>
+              <td>{{migu.m_settlementAmount}}</td>
+            </tr>
+            <tr ng-repeat="total in totalDatas">
+              <td></td>
+              <td colspan="2">{{total.totalNumber}}</td>
+              <td>{{total.t_out_hlw_noTax}}</td>
+              <td>{{total.t_out_hlw_Tax}}</td>
+              <td>{{total.t_in_hlw_noTax}}</td>
+              <td>{{total.t_in_hlw_Tax}}</td>
+              <td>{{total.t_out_heCloud_noTax}}</td>
+              <td>{{total.t_out_heCloud_Tax}}</td>
+              <td>{{total.t_in_heCloud_noTax}}</td>
+              <td>{{total.t_in_heCloud_Tax}}</td>
+              <td>{{total.t_out_139Email_noTax}}</td>
+              <td>{{total.t_out_139Email_Tax}}</td>
+              <td>{{total.t_in_139Email_noTax}}</td>
+              <td>{{total.t_in_139Email_Tax}}</td>
+              <td>{{total.t_out_heMessage_noTax}}</td>
+              <td>{{total.t_out_heMessage_Tax}}</td>
+              <td>{{total.t_in_heMessage_noTax}}</td>
+              <td>{{total.t_in_heMessage_Tax}}</td>
+              <td>{{total.t_out_heFetion_noTax}}</td>
+              <td>{{total.t_out_heFetion_Tax}}</td>
+              <td>{{total.t_in_heFetion_noTax}}</td>
+              <td>{{total.t_in_heFetion_Tax}}</td>
+              <td>{{total.t_out_heContacts_noTax}}</td>
+              <td>{{total.t_out_heContacts_Tax}}</td>
+              <td>{{total.t_in_heContacts_noTax}}</td>
+              <td>{{total.t_in_heContacts_Tax}}</td>
+              <td>{{total.t_settlementAmount}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<!--顶部logo和设置-->
+<div class="proHeader">
+  <div class="logo">
+    <img src="images/logo.png">
+    <span>中国移动</span>
+  </div>
+  <!-- <div class="userSet">
+    设置 <i class="glyphicon glyphicon-cog"></i> 
+  </div> -->
+    <div class="dropdown userSet">
+	    <div class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+	    设置 <i class="glyphicon glyphicon-cog"></i>
+	    </div>  
+	    <ul class="dropdown-menu" style="width: 96px;left: -16px;top: 47px;" aria-labelledby="dropdownMenu1">
+	    	<li ng-click="logOff()"><a href="">退出登录</a></li>
+	    </ul>
+    </div>
+  <div class="title">
+  	在线计费管控台
+  </div>
+</div>
+<!--菜单-->
+<div class="proMenu" ng-init="menuInit()">
+	<!-- <ul>
+		<li ng-class="{mainMenuActive:mainMenu==='businessShow'}" name="businessShow" ng-click="toggleMenu('businessShow')"><span>业务展示</span><i class="glyphicon glyphicon-chevron-down"></i></li>
+		<ul ng-show="openMenu.businessShow">
+			<li><a ng-class="{childMenuActive:childMenu=='signInOut'}" ui-sref="main.signInOut">签到签退状态展示</a></li>
+		</ul>
+
+		<li ng-class="{mainMenuActive:mainMenu=='informationQuery'}" name="informationQuery" ng-click="toggleMenu('informationQuery')"><span>信息查询</span> <i class="glyphicon glyphicon-chevron-down"></i></li>
+		<ul ng-show="openMenu.informationQuery">
+			<li><a ng-class="{childMenuActive:childMenu==='failTransaction'}" ui-sref="main.failTransaction">失败交易查询</a></li>
+		</ul>
+
+		<li ng-class="{mainMenuActive:mainMenu==='countShow'}" name="countShow" ng-click="toggleMenu('countShow')"><span>对账展示</span><i class="glyphicon glyphicon-chevron-down"></i></li>
+		<ul ng-show="openMenu.countShow">
+			<li><a ng-class="{childMenuActive:childMenu=='countArriveShow'}" ui-sref="main.countArriveShow">对账文件到达情况</a></li>
+			<li><a ng-class="{childMenuActive:childMenu==='countDiffShow'}" ui-sref="main.countDiffShow">对账差异情况</a></li>
+			<li><a ng-class="{childMenuActive:childMenu==='countAlarmShow'}" ui-sref="main.countAlarmShow">对账告警情况</a></li>
+		</ul>
+
+		<li ng-class="{mainMenuActive:mainMenu==='businessControl'}" name="businessControl" ng-click="toggleMenu('businessControl')"><span>业务控制</span><i class="glyphicon glyphicon-chevron-down"></i></li>
+		<ul ng-show="openMenu.businessControl">
+			<li><a ng-class="{childMenuActive:childMenu=='reconDown'}" ui-sref="main.reconDown">对账文件下载</a></li>
+			<li><a ng-class="{childMenuActive:childMenu=='reconRerun'}" ui-sref="main.reconRerun">对账文件重跑</a></li>
+      <li><a ng-class="{childMenuActive:childMenu==='checkFileDownload'}" ui-sref="main.checkFileDownload">核减文件下载</a></li>
+			<li><a ng-class="{childMenuActive:childMenu==='settleCheckRerun'}" ui-sref="main.settleCheckRerun">结算稽核重跑</a></li>
+			<li><a ng-class="{childMenuActive:childMenu==='fileSend'}" ui-sref="main.fileSend">文件下发</a></li>
+     </ul>
+     
+    <li ng-class="{mainMenuActive:mainMenu==='formOut'}" name="formOut" ng-click="toggleMenu('formOut')"><span>报表出具</span><i class="glyphicon glyphicon-chevron-down"></i></li>
+    <ul ng-show="openMenu.formOut">
+      <li><a ng-class="{childMenuActive:childMenu==='liveSettleDetailForm'}" ui-sref="main.liveSettleDetailForm">在线计费详单报表</a></li>
+      <li><a ng-class="{childMenuActive:childMenu==='liveBalanceSettleForm'}" ui-sref="main.liveBalanceSettleForm">在线计费结算报表</a></li>
+    </ul>
+	</ul> -->
+</div>
+<div class="proBody container-fluid" ui-view="main"></div>
+<div class="globalTip" ng-show="noticeMsg">
+	<div ng-class="noticeClass" role="alert">
+		<span ng-bind="noticeMsg"></span>
+	</div>
+</div>
+
+

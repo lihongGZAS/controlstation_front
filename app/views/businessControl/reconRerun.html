@@ -1,0 +1,132 @@
+<!-- 对账文件重跑 -->
+<div class="row" ng-init="initPage()">
+	<form class="formQuery col-lg-12 col-md-12" role="form">
+		<div class="col-lg-4 col-md-6">
+			<div class="col-lg-4 col-md-4">
+				<label>账期类型</label>
+			</div>
+			<div class="col-lg-8 col-md-8">
+				<select name="dateType" class="form-control" ng-model="queryParams.dateType" ng-change="changeDateType()">
+					<option value="day">账期日</option>
+					<option value="month">账期月</option>
+				</select>
+			</div>
+		</div>	
+		<div class="col-lg-4 col-md-6">
+			<div class="col-lg-4 col-md-4">
+				<label>账期</label>
+			</div>
+			<div class="col-lg-8 col-md-8">
+				<input name="settleDate" type="text" ng-model="queryParams.settleDate" class="form-control" placeholder="请选择日期"></div>
+		</div>
+		<div class="col-lg-4 col-md-6">
+			<div class="col-lg-4 col-md-4">
+				<label>省份</label>
+			</div>
+			<div class="col-lg-8 col-md-8">
+				<multi-select list-datas="provinces" name="provinceName" code="provinceCode" ng-model="queryParams.provinceCode" ng-class="multiSelect_pro"></multi-select>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-6">
+			<div class="col-lg-4 col-md-4">
+				<label>外部商户</label>
+			</div>
+			<div class="col-lg-8 col-md-8">
+				<select name="businessLine" class="form-control" ng-model="queryParams.businessLine">
+					<option value="">全部</option>
+					<option value="0068">咪咕</option>
+					<option value="0071">互联网</option>
+				</select>
+			</div>
+		</div>
+    <div class="col-lg-6 col-md-6">
+    	<div class="col-lg-2 col-md-2"></div>
+      <div class="col-lg-10 col-md-10">
+        <button type="button" class="btn btn-primary" ng-click="queryByCondition1()"> <i class="glyphicon glyphicon-search"></i>
+          查询
+        </button>
+        <button type="button" class="btn btn-primary" ng-click="provinceRerun()" ng-disabled="runBtn"><i class="glyphicon glyphicon-retweet"></i>
+          省重跑
+        </button>
+        <button type="button" class="btn btn-primary" ng-click="subtractRerun()" ng-disabled="!runBtn"><i class="glyphicon glyphicon-retweet"></i>
+          核减重跑
+        </button>
+      </div>   
+    </div>
+	</form>
+	<div class="col-lg-12 col-md-12">
+		<div class="formTable" id="formTable">
+			<table class="table table-striped table-hover table-bordered">
+				<thead>
+					<tr>
+						<th><input type="checkbox" ng-checked="resultDas.marquee" ng-click="proCheckbox('list',resultDas)" /></th>
+						<th>序号</th>
+						<th>账期</th>
+						<th>省份</th>
+						<th>外部商户</th>
+						<th>省侧文件名称</th>
+						<th>对账状态</th>
+						<th>到达状态</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="res in resultDas" ng-class="{trClass:!res.rerunState}" title="{{!res.rerunState?'文件不能进行重跑！':''}}"check-table="checkTable('formTable')">
+						<td><input type="checkbox" ng-checked="res.checkbox" ng-if="res.rerunState" ng-click="proCheckbox('list',resultDas,$index)"/></td>
+						<td>{{$index+1}}</td>
+						<td>{{res.settleDate}}</td>
+						<td>{{res.provinceName}}</td>
+						<td>{{res.businessLine}}</td>
+						<td>{{res.proFileName}}</td>
+						<td>{{res.stateDesc}}</td>
+						<td>{{res.fileStatus}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="col-lg-12 col-md-12">
+		<paging total-count="page.totalCount" page-size="page.pageSize" current-page="page.currentPage"	
+						first-text="首页" prev-text="上一页" next-text="下一页" last-text="尾页" 
+						go-page="getNewPageData(pageSize,currentPage)">
+		</paging>
+	</div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">  
+  <div class="modal-dialog" role="document">  
+    <div class="modal-content">  
+      <div class="modal-header">  
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">  
+            <span aria-hidden="true" ng-click="cancelRun()">×</span>  
+        </button>  
+        <h4 class="modal-title" id="myModalLabel">对账文件--省重跑</h4>  
+      </div>  
+      <div class="modal-body">  
+        <h3></h3>  
+      </div>  
+      <div class="modal-footer">  
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelRerun()">取消</button>  
+        <button type="button" class="btn btn-primary" ng-click="submitRerun()">确认</button>  
+      </div>  
+    </div>  
+  </div>  
+</div>
+<!-- 核减重跑的确认模态框 -->
+<div class="modal fade" id="subtractRerun" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">  
+  <div class="modal-dialog" role="document">  
+    <div class="modal-content">  
+      <div class="modal-header">  
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">  
+            <span aria-hidden="true" ng-click="cancelRun()">×</span>  
+        </button>  
+        <h4 class="modal-title" id="myModalLabel">对账文件--核减重跑</h4>  
+      </div>  
+      <div class="modal-body">  
+        <h3></h3>  
+      </div>  
+      <div class="modal-footer">  
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelSubRerun()">取消</button>  
+        <button type="button" class="btn btn-primary" ng-click="commitSubtractRerun()">确认</button>  
+      </div>  
+    </div>  
+  </div>  
+</div>
