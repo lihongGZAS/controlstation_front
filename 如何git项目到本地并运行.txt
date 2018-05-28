@@ -1,0 +1,12 @@
+准备工作：①安装npm、git
+
+1、在你本地新建一个项目文件夹（该文件夹及其上层文件的名称，到根目录如D盘、C盘等为止，不能带有中文名），否则grunt
+serve命令运行项目会出现sass因为中文名文件夹编译报错
+
+2、clone地址，然后在你新建的目录里面右键选择Git Bash Here，在弹出的小窗口里输入git clone + 项目的GitHub地址
+
+3、拉取到项目代码后，在根目录下打开cmd窗口，输入npm install安装node_modules文件夹
+
+4、先启动本地服务：在根目录下Shift+右键打开cmd窗口，输入node api_server/app
+
+5、启动项目：在根目录下Shift+右键另外打开一个cmd窗口，输入grunt serve运行项目，等待项目打开
